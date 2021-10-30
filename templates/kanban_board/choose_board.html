@@ -1,0 +1,49 @@
+<!Doctype html>
+<html>
+<head>
+	<title>Kanban Board</title>
+	{% load static %}
+	<meta charset='utf8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="{% static 'kanban_board/third_party/bootstrap/css/bootstrap.min.css' %}"/>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="my-5"> Select Product and Board To Show. </span>
+					<form class="form-inline my-5">
+						<label for="product" class="col-3 col-form-label">Product</label>
+						<select name="product" id="product" class="col-3 form-control">
+							{% for product in products %}
+								<option value="{{ product.pk }}">{{ product.name }}</option>
+							{% endfor %}
+						</select>
+						<label for="board" class="col-3 col-form-label">Board</label>
+						<select name="board" id="board" class="col-3 form-control">
+							{% for board in boards %}
+								<option value="{{ board.pk }}">{{ board.name }}</option>
+							{% endfor %}
+						</select>
+						<button onclick="go(this.form)" type="button" class="btn btn-light active btn-lg btn-block mt-3">Go</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		function go(arg){
+			let product = arg.children["product"].value;
+			let board = arg.children["board"].value;
+			window.location.pathname = "/products/" + product + "/boards/" + board;
+			
+		}
+	</script>
+	<!-- bootstrap javascript files not needed
+	<script src="{% static 'kanban_board/third_party/jquery/jquery.min.js' %}"></script>
+	<script src="{% static 'kanban_board/third_party/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+	-->
+</body>
+</html>

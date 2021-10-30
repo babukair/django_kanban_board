@@ -1,0 +1,68 @@
+<!Doctype html>
+{% load static %}
+<html>
+<head>
+	<meta charset='utf8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="{% static 'kanban_board/third_party/bootstrap/css/bootstrap.min.css' %}"/>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12 table-responsive">
+				<table class="table table-bordered">
+					<thead class="thead-light">
+						<tr>
+							{% for one_status in status %}
+								<th>{{ one_status.status.name }}</th>
+							{% endfor %}
+						</tr>
+						
+					</thead>
+					<tbody>
+						<tr>
+							{% for tasks in tasks_list %}
+								<td class="px-5">
+									{% for one_task in tasks %}
+										<div class="card my-4 mx-auto">
+											<div class="card-header" data-toggle="collapse" data-target="#task_body_{{ one_task.pk }}"
+												style="cursor:pointer; user-select:none">
+												<h5 class="card-title">{{ one_task.name }}</h5>
+												<h6 class="card-subtitle text-muted" >{{ one_task.ref_code }}</h6>
+											</div>
+											<div class="card-body collapse show" id="task_body_{{ one_task.pk }}">
+												<p class="card-text">{{ one_task.description }}</p>
+												<p class="card-text">
+													{% if one_task.super_task__name %}
+														Super Task: {{ one_task.super_task__name }} <br/>
+													{% endif %}
+													{% if one_task.degree %}
+														Degree: {{ one_task.degree }} <br/>
+													{% endif %}
+													{% if one_task.priority %}
+														Priority: {{ one_task.priority }} <br/>
+													{% endif %}
+													{% if one_task.taskstatus__taken_by__username %}
+														Taken By: {{ one_task.taskstatus__taken_by__username }} <br/>
+													{% endif %}
+												</p>
+											</div>
+											<div class="card-footer">
+												Transfered On: {{ one_task.taskstatus__transfered_on }}
+											</div>
+										</div>
+									{% endfor %}
+								</td>
+							{% endfor %}
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<script src="{% static 'kanban_board/third_party/jquery/jquery.min.js' %}"></script>
+	<script src="{% static 'kanban_board/third_party/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
