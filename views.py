@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.db.models import F, Max
 from django.contrib import auth
+from django.core.exceptions import PermissionDenied
 
 from .models import Board, Product, Task, Comment
 
@@ -39,10 +40,14 @@ def kanban_board(request, product, board):
 def add_comment(request):
     user = auth.get_user(request)
     if user.is_anonymous:
-        raise Http404("Hello")
+        raise PermissionDenied("Hello")
     else:
-        if request.POST["comment"]:
+        if "comment" in request.POST and request.POST["comment"]:
             task = get_object_or_404(Task, pk = request.POST["task"])
             task.comment_set.create(comment = request.POST["comment"], commenter = user)
-        return HttpResponseRedirect(request.POST["prev_url"])
+            
+        if "prev_url" in request.POST and request.POST["prev_url"]:
+            return HttpResponseRedirect(request.POST["prev_url"])
+        else:
+            return HttpResponseRedirect("/")
         

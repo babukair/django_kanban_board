@@ -60,13 +60,14 @@
 															</div>
 														{% endfor %}
 														<div class="alert alert-dark pb-0 mb-0">
-															<form action="{% url 'django_kanban_board:add_comment' %}" method="post">
+															<form class="add_comment"  method="post"
+																action="{% url 'django_kanban_board:add_comment' %}">
 																{% csrf_token %}
 																<input type="hidden" name="prev_url"/>
 																<input type="hidden" name="task" value="{{ one_task.pk }}" />
-																<label class="sr-only" for="new_comment">Comment Text</label>
-																<textarea id="new_comment" name="comment" class="form-control" required="required"
-																	placeholder="Add Comment" style="width:100%;min-height: 100px;"></textarea>
+																<label class="sr-only" for="new_comment_{{ one_task.pk }}">Comment Text</label>
+																<textarea id="new_comment_{{ one_task.pk }}" name="comment" class="form-control"
+																	required="required" placeholder="Add Comment" style="width:100%;min-height: 100px;"></textarea>
 																<button class="btn btn-block btn-dark">ADD Comment</button>
 															</form>
 														</div>
@@ -90,7 +91,12 @@
 	<script src="{% static 'kanban_board/third_party/jquery/jquery.min.js' %}"></script>
 	<script src="{% static 'kanban_board/third_party/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 	<script>
-		document.forms[0].elements[1].value = document.location.pathname
+		let comment_forms = document.querySelectorAll(".add_comment")
+		if (comment_forms){
+			for (let i = 0; i < comment_forms.length; ++i){
+				comment_forms[i].elements[1].value = document.location.pathname
+			}
+		}
 	</script>
 </body>
 </html>
