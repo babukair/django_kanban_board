@@ -47,6 +47,31 @@
 														Taken By: {{ one_task.taskstatus__taken_by__username }} <br/>
 													{% endif %}
 												</p>
+												
+												<div class="comments" style="margin: auto -1.25rem -1.25rem">
+													<h4 class="card-text alert-dark mb-0 px-1" data-toggle="collapse" 
+														data-target="#task_comments_{{ one_task.pk }}" 
+														style="cursor:pointer; user-select:none;">Comments</h4>
+													<div class="card-text collapse show" id="task_comments_{{ one_task.pk }}">
+														{% for com in one_task.comments %}
+															<div class="alert alert-dark pb-0 mb-0">
+																<div class="aleart-heading pre">{{ com.comment }}</div>
+																<div class="mt-4 bg-light"> commenter: {{ com.commenter.username }}</div>
+															</div>
+														{% endfor %}
+														<div class="alert alert-dark pb-0 mb-0">
+															<form action="{% url 'django_kanban_board:add_comment' %}" method="post">
+																{% csrf_token %}
+																<input type="hidden" name="prev_url"/>
+																<input type="hidden" name="task" value="{{ one_task.pk }}" />
+																<label class="sr-only" for="new_comment">Comment Text</label>
+																<textarea id="new_comment" name="comment" class="form-control" required="required"
+																	placeholder="Add Comment" style="width:100%;min-height: 100px;"></textarea>
+																<button class="btn btn-block btn-dark">ADD Comment</button>
+															</form>
+														</div>
+													</div>
+												</div>
 											</div>
 											<div class="card-footer">
 												Transfered On: {{ one_task.taskstatus__transfered_on }}
@@ -64,5 +89,8 @@
 	</div>
 	<script src="{% static 'kanban_board/third_party/jquery/jquery.min.js' %}"></script>
 	<script src="{% static 'kanban_board/third_party/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+	<script>
+		document.forms[0].elements[1].value = document.location.pathname
+	</script>
 </body>
 </html>
