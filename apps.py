@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class BoardConfig(AppConfig):
-    name = 'board'
+    name = 'django_kanban_board'
