@@ -4,6 +4,7 @@
 <head>
 	<meta charset='utf8'>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="{% static 'kanban_board/global.css' %}"/>
 	<link rel="stylesheet" href="{% static 'kanban_board/third_party/bootstrap/css/bootstrap.min.css' %}"/>
 </head>
 
@@ -15,7 +16,7 @@
 					<thead class="thead-light">
 						<tr>
 							{% for one_status in status %}
-								<th>{{ one_status.status.name }}</th>
+								<th class="text-nowrap">{{ one_status.status.name }}</th>
 							{% endfor %}
 						</tr>
 						
@@ -25,14 +26,14 @@
 							{% for tasks in tasks_list %}
 								<td class="px-5">
 									{% for one_task in tasks %}
-										<div class="card my-4 mx-auto">
+										<div class="card my-4 mx-auto task-card">
 											<div class="card-header" data-toggle="collapse" data-target="#task_body_{{ one_task.pk }}"
 												style="cursor:pointer; user-select:none">
 												<h5 class="card-title">{{ one_task.name }}</h5>
 												<h6 class="card-subtitle text-muted" >{{ one_task.ref_code }}</h6>
 											</div>
 											<div class="card-body collapse show" id="task_body_{{ one_task.pk }}">
-												<p class="card-text">{{ one_task.description }}</p>
+												<p class="card-text pre">{{ one_task.description }}</p>
 												<p class="card-text">
 													{% if one_task.super_task__name %}
 														Super Task: {{ one_task.super_task__name }} <br/>
