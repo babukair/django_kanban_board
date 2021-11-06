@@ -1,0 +1,11 @@
+*{
+	unicode-bidi: plaintext;
+}
+
+.pre{
+	white-space: pre-wrap;
+}
+
+.task-card{
+	width: 400px;
+}
